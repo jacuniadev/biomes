@@ -1,5 +1,5 @@
 return {
     NONE = -1;
-    OBJECT = 0;
-    PLAYER = 1;
+    PLAYER = 0;
+    OBJECT = 1;
 };

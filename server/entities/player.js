@@ -15,6 +15,7 @@ class Player extends Entity {
         this.socket = socket;
 
         this.handshaked = false;
+        this.nickname = "";
     }
 
     setHwid(hwid) {

@@ -3,6 +3,7 @@ local entity_types = require("game.types.entities");
 
 local entity = class {
     init = function(self, eType, angle, speed, x, y)
+        self.id = -1;
         self.type = eType or entity_types["NONE"];
         
         self.speed = self.type == entity_types["NONE"] or self.type == entity_types["OBJECT"] and 0 or speed or 0;
@@ -15,6 +16,12 @@ local entity = class {
         self.max_health = 100;
         
         self.attacking = false;
+    end;
+
+    setId = function(self, id)
+        if (id and type(id) == "number") then
+            self.id = id;
+        end;
     end;
 
     update = function(self, delta)

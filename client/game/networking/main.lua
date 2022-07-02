@@ -3,6 +3,10 @@ local inspect = require("libs.inspect");
 
 local socket = require("socket");
 
+local entity_types = require("game.types.entities");
+
+local PLAYER_ENTITY = require("game.entities.player");
+
 return class {
     init = function(self)
         self.socket = false;
@@ -35,7 +39,33 @@ return class {
                 if data then
                     if type(data) == "string" then
                         local m = json.decode(data);
-                        print(m.action);
+                        
+                        if m.action == "game_joined" then
+                            if m.data then
+                                if next(m.data.entities) ~= nil then
+                                    for i, entity in ipairs(m.data.entities) do
+                                        if entity.type == entity_types["PLAYER"] then
+                                            local e = PLAYER_ENTITY(nil, entity.position.x, entity.position.y);
+
+                                            if e then
+                                                e:setId(entity.id);
+
+                                                if not user.world:isEntityExists(e) then
+                                                    user.world:addEntity(e);
+                                                end
+
+                                                if m.data.eid and m.data.eid == entity.id then
+                                                    e:setNickname(user.entity.nickname);
+                                                    
+                                                    user.id = m.data.eid;
+                                                    user.entity = e;
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
                     end
 
                     print(data);

@@ -44,7 +44,7 @@ love.load = function()
     -- update user screen & mouse data
     utils:updateUserData();
 
-    user.world:addEntity(user.entity);
+    -- user.world:addEntity(user.entity);
     user.networking:connect("localhost", 3000);
 end;
 
@@ -63,5 +63,7 @@ end;
 
 -- game draw
 love.draw = function()
-   return user.scene:draw();
+    user.scene:draw();
+
+    utils:drawText(("FPS: %.2f"):format(love.timer.getFPS()), 0, 0, user.screen.width, user.screen.height, nil, "left", nil, { 255, 255, 255, 255 });
 end;

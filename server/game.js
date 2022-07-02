@@ -42,7 +42,9 @@ class GameServer extends Socket {
     }
 
     onConnection(socket) {
-        return this.addClient(socket);
+        const entity = new Player(this, socket);
+
+        this.addClient(entity, socket);
     }
 
     _deleteEntity(entity) {
@@ -108,14 +110,12 @@ class GameServer extends Socket {
         entity.isDestroyed = true;
     }
 
-    addClient(socket) {
+    addClient(entity, socket) {
         const cid = this.inactiveClients.length > 0 ? this.inactiveClients.pop() : this.cursors.client++;
         
         socket.clientId = cid;
         this.clients.set(cid, socket);
-
-        const player = new Player(this, socket);
-        this.addEntity(player);
+        this.addEntity(entity);
 
         const tmp_entities = [];
         for (let index = this.entities.length; index--;) {
@@ -131,8 +131,23 @@ class GameServer extends Socket {
             }
         }
 
+        const tmp_players = [];
+        for (let index = this.entities.length; index--;) {
+            const entity = this.entities[index];
+
+            if (entity && entity.type === ENTITY.PLAYER) {
+                if (entity.socket.clientId === cid) continue;
+
+                tmp_players.push({
+                    id: entity.id,
+                    nickname: entity.nickname,
+                })
+            }
+        }
+
         const packet = new Welcome({
-            eid: player.id,
+            eid: entity.id,
+            players: tmp_players,
             entities: tmp_entities,
         });
         this.sendToSocket(socket, packet);

@@ -1,4 +1,4 @@
-local entity = require("game.entities.entity");
+local entity = require("game.entity");
 local actions = require("game.types.actions");
 local entity_types = require("game.types.entities");
 
@@ -31,17 +31,14 @@ return entity:extend {
         };
 
         -- properties
-        self.nickname   = "";                  -- player nickname
-        self.score      = 0;                   -- player score
+        self.nickname   = nickname or "";   -- player nickname
+        self.score      = 0;                -- player score
+    end;
 
-        -- set player nickname
-        if not nickname or type(nickname) ~= "string" then
-            self.nickname = "";
-
-            print("Player - nickname is not a string or is nil");
-        else
+    setNickname = function(self, nickname)
+        if (nickname and type(nickname) == "string") then
             self.nickname = nickname;
-        end
+        end;
     end;
 
     draw = function(self)
