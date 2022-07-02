@@ -1,4 +1,4 @@
-const { ENTITY } = require("../types");
+const { ENTITY } = require("../constants");
 const Entity = require("../entity");
 
 const { isEmptyOrSpaces } = require("../utils");

@@ -1,4 +1,4 @@
-const { ENTITY } = require("./types");
+const { ENTITY } = require("./constants");
 
 class Entity {
     constructor(type) {
