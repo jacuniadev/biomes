@@ -25,16 +25,12 @@ return class {
     end;
 
     update = function(self, delta)
-        local data, message;
+        local data, message, received, sent;
 
         if self.socket then
-            local received, sent = self.socket:getstats();
-
-            self.details.sent = sent;
-            self.details.received = received;
-
             repeat
                 data, message = self.socket:receive("*l");
+                received, sent = self.socket:getstats();
 
                 if data then
                     if type(data) == "string" then

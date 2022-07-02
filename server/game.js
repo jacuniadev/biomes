@@ -5,6 +5,7 @@ const Player = require("./entities/player");
 const Welcome = require("./packets/welcome");
 const AddEntity = require("./packets/addEntity");
 const Update = require("./packets/update");
+const { ENTITY } = require("./constants");
 
 const TICKS = 1000 / 16;
 console.log("ticks", TICKS);
@@ -167,8 +168,14 @@ class GameServer extends Socket {
         }
 
         const packet = new Update(tmp);
-        if (packet) {
-            this.sendToAllSockets(packet.json);
+        for (let index = this.entities.length; index--;) {
+            const entity = this.entities[index];
+
+            if (entity && entity.type === ENTITY.PLAYER) {
+                if (!entity.handshaked) return;
+
+                if (entity.socket) this.sendToSocket(entity.socket, packet.json);
+            }
         }
 
         if (this.destroyedEntities.length > 0) {
