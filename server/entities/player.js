@@ -49,17 +49,13 @@ class Player extends Entity {
                                 if (this.handshaked) return;
 
                                 const { nickname, hwid } = data;
-                                const eid = 10000 + this.gameServer.entities.length + 1;
 
-                                this.setId(eid);
                                 this.setHwid(hwid);
                                 this.setNickname(nickname);
 
                                 this.handshaked = true;
-                                this.gameServer.players.push(this);
-                                this.gameServer.entities.push(this);
 
-                                console.log(`${this.nickname} (HWID: ${this.hwid}, EID: ${eid}, SID: ${connectionId}) connected to the server`);
+                                console.log(`${this.nickname} (HWID: ${this.hwid}) connected to the server`);
                                 break;
                             }
                             case "chat": {

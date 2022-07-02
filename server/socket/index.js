@@ -65,6 +65,23 @@ class Socket extends EventEmitter {
 
         return null;
     }
+
+    sendToAllSockets(message) {
+        for (let index = this.sockets.length; index--;) {
+            const socket = this.sockets[index];
+
+            if (socket && socket.isConnected) socket.write(message + "\n");
+        }
+    }
+
+    sendToSocket(socket, message) {
+        message = typeof message === "object" ? JSON.stringify(message) : message;
+
+        if (socket.isConnected)
+            return socket.write(message + "\n");
+
+        return false;
+    }
 };
 
 module.exports = Socket;

@@ -1,7 +1,11 @@
 const Packet = require("../packet");
 
-class addEntity extends Packet {
+const { PACKETS } = require("../constants");
+
+class AddEntity extends Packet {
     constructor(entity) {
+        if (!entity) throw Error("Entity is required!");
+
         const data = {
             id: entity.id,
             type: entity.type,
@@ -12,8 +16,8 @@ class addEntity extends Packet {
             angle: entity.angle
         };
 
-        super("new_entity", data);
+        super(PACKETS.NEW_ENTITY, data);
     }
 }
 
-module.exports = addEntity;
+module.exports = AddEntity;

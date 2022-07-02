@@ -34,12 +34,11 @@ return class {
             self.details.received = received;
 
             repeat
-                data, message = self.socket:receive('*a');
+                data, message = self.socket:receive("*l");
 
                 if data then
                     if type(data) == "string" then
                         local m = json.decode(data);
-
                         print(m.action);
                     end
 
